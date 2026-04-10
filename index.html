@@ -180,13 +180,12 @@
     }
 
     .hero-photo {
-      min-height: 100%;
-      background:
-        linear-gradient(160deg, rgba(109,40,217,0.86), rgba(192,132,252,0.72)),
-        url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?auto=format&fit=crop&w=1000&q=80') center/cover;
-      color: white;
       position: relative;
       overflow: hidden;
+      min-height: 340px;
+      padding: 0;
+      color: white;
+      background: linear-gradient(160deg, rgba(109,40,217,0.86), rgba(192,132,252,0.72));
     }
 
     .hero-photo::after {
@@ -196,17 +195,66 @@
       width: 170px;
       height: 170px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.18);
       filter: blur(4px);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .slideshow {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 0.9s ease, transform 5s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(45,16,84,0.22), rgba(45,16,84,0.55));
     }
 
     .hero-photo-copy {
       position: relative;
-      z-index: 1;
+      z-index: 3;
       display: flex;
       flex-direction: column;
       justify-content: end;
       min-height: 340px;
+      padding: 2rem;
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 1rem;
+    }
+
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transition: 0.2s ease;
+    }
+
+    .slide-dot.active {
+      background: white;
+      transform: scale(1.1);
     }
 
     .mini-grid {
@@ -221,6 +269,29 @@
       border-radius: 20px;
       background: rgba(255,255,255,0.7);
       border: 1px solid rgba(109,40,217,0.12);
+    }
+
+    .profile-inline {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0 0.35rem;
+    }
+
+    .profile-pic {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.95);
+      box-shadow: 0 10px 24px rgba(109,40,217,0.18);
+      background: #eee;
+      flex-shrink: 0;
+    }
+
+    .profile-note {
+      color: var(--muted);
+      font-size: 0.95rem;
     }
 
     section {
@@ -331,6 +402,10 @@
       .hero {
         padding-top: 3rem;
       }
+
+      .profile-inline {
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -353,6 +428,18 @@
       <div class="wrap hero-grid">
         <div class="card">
           <div class="eyebrow">PhD in Mathematics</div>
+
+          <div class="profile-inline">
+            <img
+              class="profile-pic"
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80"
+              alt="Portrait of Zita Borbála Fülöp"
+            />
+            <div class="profile-note">
+              Replace this with your own headshot later by swapping the image URL.
+            </div>
+          </div>
+
           <h1>Zita Borbála Fülöp</h1>
           <p class="subtitle">I am a final‑year Mathematics PhD student working at the intersection of mathematical modelling, medical imaging, and oncology, developing patient‑specific models to improve brain cancer treatment.</p>
 
@@ -363,7 +450,7 @@
           <div class="mini-grid">
             <div class="mini-card">
               <strong class="accent-text">Research areas</strong>
-              <div class="muted">glioblastoma, electrochemotherapy, continuum models, asymptotic homogenisation,mathematical biology, PDEs</div>
+              <div class="muted">glioblastoma, electrochemotherapy, continuum models, asymptotic homogenisation, mathematical biology, PDEs</div>
             </div>
             <div class="mini-card">
               <strong class="accent-text">Now</strong>
@@ -374,10 +461,21 @@
 
         <div class="hero-side">
           <div class="card hero-photo">
+            <div class="slideshow" aria-hidden="true">
+              <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80');"></div>
+              <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80');"></div>
+              <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?auto=format&fit=crop&w=1200&q=80');"></div>
+            </div>
+
             <div class="hero-photo-copy">
               <div class="eyebrow" style="background: rgba(255,255,255,0.16); color: white;">zbfmath.com</div>
-              <h2 style="margin-top: 1rem; font-size: 2rem;">Funky, clean, and unmistakably yours.</h2>
-              <p style="max-width: 22rem; margin: 0;">Swap this panel for your portrait, an abstract graphic, or a favourite mathematical image.</p>
+              <h2 style="margin-top: 1rem; font-size: 2rem;">Research, images, and a bit of movement.</h2>
+              <p style="max-width: 22rem; margin: 0;">This panel now rotates through images. You can use a portrait, microscopy image, MRI scan, maths graphic, or conference photos.</p>
+              <div class="slide-dots" aria-hidden="true">
+                <span class="slide-dot active"></span>
+                <span class="slide-dot"></span>
+                <span class="slide-dot"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -417,7 +515,7 @@
             </li>
             <li>
               <strong>Focus</strong><br />
-              <span class="muted">Continuum Models, Asymptotic Homogenisation, Glioblastoma, Electrochemotehrapy</span>
+              <span class="muted">Continuum Models, Asymptotic Homogenisation, Glioblastoma, Electrochemotherapy</span>
             </li>
             <li>
               <strong>Elsewhere</strong><br />
@@ -453,130 +551,129 @@
         </div>
       </div>
     </section>
-<section id="achievements">
-  <div class="wrap">
-    <div class="card">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Achievements</div>
-          <h2 class="section-title">Awards and recognition</h2>
+
+    <section id="achievements">
+      <div class="wrap">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Achievements</div>
+              <h2 class="section-title">Awards and recognition</h2>
+            </div>
+          </div>
+
+          <ul class="list-clean">
+            <li>
+              <strong>STEM for Britain Silver Award in Mathematics</strong><br>
+              House of Commons, UK Parliament (2026)
+            </li>
+
+            <li>
+              <strong>Best Presentation Award</strong><br>
+              Computational Biology Conference (2025)
+            </li>
+
+            <li>
+              <strong>1st Prize at Science Slam</strong><br>
+              University of Glasgow (2025)
+            </li>
+
+            <li>
+              <strong>2nd Prize for Best Early Career Researcher Presentation</strong><br>
+              7th Soft Tissue Modelling Workshop, Milan (2025)
+            </li>
+
+            <li>
+              <strong>Mobility Scholarship</strong><br>
+              UofG College of Science and Engineering £1,000 research grant to support research visit to Radboudumc and UMC Utrecht (2025)
+            </li>
+            <li>
+              <strong>1st Prize for Best PhD Poster Presentation</strong><br>
+              6th Soft Tissue Modelling Workshop, Glasgow (2023)
+            </li>
+          </ul>
         </div>
       </div>
+    </section>
 
-      <ul class="list-clean">
-        <li>
-          <strong>STEM for Britain Silver Award in Mathematics</strong><br>
-          House of Commons, UK Parliament (2026)
-        </li>
+    <section id="clinical">
+      <div class="wrap">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Clinical collaborations</div>
+              <h2 class="section-title">Mathematics in clinical practice</h2>
+            </div>
+          </div>
 
-        <li>
-          <strong>Best Presentation Award</strong><br>
-          Computational Biology Conference (2025)
-        </li>
+          <ul class="list-clean">
+            <li>
+              <strong>University Medical Center Utrecht, Netherlands</strong><br>
+              Collaboration focused on patient-specific modelling of glioblastoma and the interpretation of MRI data to improve understanding of treatment response and radiotherapy mechanisms.
+            </li>
 
-        <li>
-          <strong>1st Prize at Science Slam </strong><br>
-          University of Glasgow (2025)
-        </li>
+            <li>
+              <strong>National Institute of Oncology, Hungary</strong><br>
+              Initiated collaboration supporting mathematical modelling of tumour behaviour and data-driven treatment planning. Developed and coordinated data-sharing agreements and ethical approval processes.
+            </li>
 
-        <li>
-          <strong>2nd Prize for Best Early Career Researcher Presentation</strong><br>
-          7th Soft Tissue Modelling Workshop, Milan (2025)
-        </li>
-
-        <li>
-          <strong>Mobility Scholarship</strong><br>
-          UofG College of Science and Engineering £1,000 research grant to support research visit to Radboudumc and UMC Utrecht(2025)
-        </li>
-         <li>
-          <strong>1st Prize for Best PhD Poster Presentation</strong><br>
-          6th Soft Tissue Modelling Workshop, Glasgow (2023)
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-<section id="clinical">
-  <div class="wrap">
-    <div class="card">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Clinical collaborations</div>
-          <h2 class="section-title">Mathematics in clinical practice</h2>
+            <li>
+              <strong>Semmelweis University, Hungary</strong><br>
+              Applied statistical modelling techniques to investigate drug administration protocols and predictive factors influencing clinical outcomes in neonatal care.
+            </li>
+          </ul>
         </div>
       </div>
+    </section>
 
-      <ul class="list-clean">
-
-        <li>
-          <strong>University Medical Center Utrecht, Netherlands</strong><br>
-          Collaboration focused on patient-specific modelling of glioblastoma and the interpretation of MRI data to improve understanding of treatment response and radiotherapy mechanisms.
-        </li>
-
-        <li>
-          <strong>National Institute of Oncology, Hungary</strong><br>
-          Initiated collaboration supporting mathematical modelling of tumour behaviour and data-driven treatment planning. Developed and coordinated data-sharing agreements and ethical approval processes.
-        </li>
-
-        <li>
-          <strong>Semmelweis University, Hungary</strong><br>
-          Applied statistical modelling techniques to investigate drug administration protocols and predictive factors influencing clinical outcomes in neonatal care.
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</section>
     <section id="publications">
-  <div class="wrap">
-    <div class="card">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Publications</div>
+      <div class="wrap">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Publications</div>
+              <h2 class="section-title">Selected publications</h2>
+            </div>
+          </div>
 
-<ul class="list-clean">
+          <ul class="list-clean">
+            <li>
+              <strong>Patient-Specific Multiscale Modelling of Glioblastoma: Targeted Modulation of Interstitial Fluid Flow Using Electric Field</strong> (2026)<br>
+              Preprint<br>
+              <a href="https://doi.org/10.21203/rs.3.rs-8790032/v1" target="_blank" rel="noopener noreferrer">DOI link</a>
+            </li>
 
-  <li>
-    <strong>Patient-Specific Multiscale Modelling of Glioblastoma: Targeted Modulation of Interstitial Fluid Flow Using Electric Field</strong> (2026)<br>
-    Preprint<br>
-    <a href="https://doi.org/10.21203/rs.3.rs-8790032/v1" target="_blank">DOI link</a>
-  </li>
+            <li>
+              <strong>Multiscale analysis of electrically stimulated vascularised tumours</strong> (2025)<br>
+              <a href="https://doi.org/10.1016/j.jtbi.2025.112307" target="_blank" rel="noopener noreferrer">DOI link</a>
+            </li>
 
-  <li>
-    <strong>Multiscale analysis of electrically stimulated vascularised tumours</strong> (2025)<br>
-    <a href="https://doi.org/10.1016/j.jtbi.2025.112307" target="_blank">DOI link</a>
-  </li>
+            <li>
+              <strong>Multiscale modelling of fluid transport in vascular tumours subjected to electrophoresis anticancer therapies</strong> (2024)<br>
+              <a href="https://doi.org/10.1007/s00033-023-02141-3" target="_blank" rel="noopener noreferrer">DOI link</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <li>
-    <strong>Multiscale modelling of fluid transport in vascular tumours subjected to electrophoresis anticancer therapies</strong> (2024)<br>
-  <br>
-    <a href="https://doi.org/10.1007/s00033-023-02141-3" target="_blank">DOI link</a>
-  </li>
-
-</ul>
-         
-    </div>
-  </div>
-</section>
     <section id="cv">
       <div class="wrap">
         <div class="card">
           <div class="section-head">
             <div>
               <div class="eyebrow">CV</div>
-            
             </div>
           </div>
-         <p>
-Download my full academic CV, including publications, talks, teaching, and interdisciplinary collaborations.
-</p>
+          <p>
+            Download my full academic CV, including publications, talks, teaching, and interdisciplinary collaborations.
+          </p>
           <div class="cta-row">
             <a class="button button-primary" href="#">Download CV</a>
           </div>
         </div>
       </div>
     </section>
-
 
     <section id="contact">
       <div class="wrap contact-grid">
@@ -588,8 +685,7 @@ Download my full academic CV, including publications, talks, teaching, and inter
             <li><strong>Profiles</strong><br /><span class="muted">Google Scholar · ORCID · LinkedIn</span></li>
           </ul>
         </div>
-        <div class="card contact-card">
-        </div>
+        <div class="card contact-card"></div>
       </div>
     </section>
   </main>
@@ -602,7 +698,25 @@ Download my full academic CV, including publications, talks, teaching, and inter
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slide-dot');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }, 3500);
   </script>
 </body>
 </html>
-
